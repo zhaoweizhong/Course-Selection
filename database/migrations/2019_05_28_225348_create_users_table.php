@@ -19,21 +19,12 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('name');
             $table->string('email');
+            $table->integer('mobile')->nullable();
             $table->string('avatar_url')->nullable();
-            $table->string('type');
-            $table->boolean('type_num');
-            $table->string('department')->nullable();
-            $table->text('intro')->nullable();
+            $table->integer('type'); // 0: student | 1: teacher
             $table->boolean('is_admin')->default(0);
             $table->rememberToken();
             $table->timestamps();
-            //教师
-            $table->string('office')->nullable();
-            $table->string('fields')->nullable();
-            //学生
-            $table->string('major')->nullable();
-            $table->string('gpa')->nullable();
-            $table->string('interested_fields')->nullable();
         });
     }
 

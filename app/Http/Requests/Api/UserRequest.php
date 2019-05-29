@@ -20,23 +20,17 @@ class UserRequest extends FormRequest
                     'password' => 'required|string|min:6',
                     'name'     => 'required|string|max:255',
                     'email'    => 'required|email',
-                    'type'     => 'required|string|in:student,faculty',
-                    'type_num' => 'required|numeric'
+                    'type'     => 'required|numeric|in:0,1'
                 ];
                 break;
             case 'PATCH':
                 $userId = \Auth::guard('api')->id();
                 return [
-                    'name'              => 'string|max:255',
-                    'email'             => 'email',
-                    'avatar_url'        => 'url',
-                    'intro'             => 'string|max:300',
-                    'department'        => 'string|max:80',
-                    'office'            => 'string|max:80',
-                    'fields'            => 'string|max:255',
-                    'major'             => 'string|max:80',
-                    'gpa'               => 'regex:/^[0-4]{1}\.[0-9]{2}$/',
-                    'interested_fields' => 'string|max:255',
+                    'password'   => 'required|string|min:6',
+                    'name'       => 'string|max:255',
+                    'email'      => 'email',
+                    'mobile'     => 'numeric|digits:11',
+                    'avatar_url' => 'url',
                 ];
                 break;
         }

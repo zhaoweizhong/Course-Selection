@@ -9,39 +9,17 @@ class UserTransformer extends TransformerAbstract
 {
     public function transform(User $user)
     {
-        if ($user->type == 'student') {
-            return [
-                'id'                => $user->id,
-                'sid'               => $user->sid,
-                'name'              => $user->name,
-                'email'             => $user->email,
-                'avatar_url'        => $user->avatar_url,
-                'type'              => $user->type,
-                'department'        => $user->department,
-                'major'             => $user->major,
-                'intro'             => $user->intro,
-                'is_admin'          => $user->is_admin,
-                'gpa'               => $user->gpa,
-                'interested_fields' => $user->interested_fields,
-                'created_at'        => $user->created_at->toDateTimeString(),
-                'updated_at'        => $user->updated_at->toDateTimeString(),
-            ];
-        } else if ($user->type == 'faculty') {
-            return [
-                'id'             => $user->id,
-                'sid'            => $user->sid,
-                'name'           => $user->name,
-                'email'          => $user->email,
-                'avatar_url'     => $user->avatar_url,
-                'type'           => $user->type,
-                'department'     => $user->department,
-                'intro'          => $user->intro,
-                'is_admin'       => $user->is_admin,
-                'office'         => $user->office,
-                'fields'         => $user->fields,
-                'created_at'     => $user->created_at->toDateTimeString(),
-                'updated_at'     => $user->updated_at->toDateTimeString(),
-            ];
-        }
+        return [
+            'id'                => $user->id,
+            'sid'               => $user->sid,
+            'name'              => $user->name,
+            'email'             => $user->email,
+            'mobile'            => $user->mobile,
+            'avatar_url'        => $user->avatar_url,
+            'type'              => $user->type,
+            'is_admin'          => $user->is_admin,
+            'created_at'        => $user->created_at->toDateTimeString(),
+            'updated_at'        => $user->updated_at->toDateTimeString(),
+        ];
     }
 }
