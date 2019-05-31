@@ -1,35 +1,36 @@
 <template>
   <div>
-    <a-list
-      :grid="{ gutter: 24, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }"
-    >
-       <a-list-item style="padding: 0 12px" v-for="searchResult in result" :key="searchResult.id">
-        <a-card>
-          <a-card-meta class="card-name" :title="searchResult.name" :description="searchResult.department" @click="redirectProfile(searchResult.id)">
-            <a-avatar slot="avatar" :src="searchResult.avatar_url" size="large" />
-          </a-card-meta>
-            <a-tooltip class="tool"  title="详情" slot="actions" @click="redirectProfile(searchResult.id)">
-              <a-icon type="user" />
-            </a-tooltip>
-            <a-tooltip class="tool"  title="发消息" slot="actions" @click="redirectMessage(searchResult.sid)">
-              <a-icon type="message" />
-            </a-tooltip>
-            <a-tooltip class="tool"  title="预约" slot="actions" @click="redirectAppointment(searchResult.sid)">
-              <a-icon type="schedule" />
-            </a-tooltip>
-          <div class="content">
-            <div>
-              <span>研究方向：</span>
-              <span>{{ searchResult.fields }}</span>
+    <a-list size="large">
+        <a-list-item v-for="searchResult in result" :key="searchResult.id">
+          <a-list-item-meta
+            :description="'Location: ' + searchResult.location"
+          >
+          <a-icon slot="avatar" style="fontSize: 48px" type="book" theme="twoTone"/> 
+          <a slot="title">{{searchResult.name}}</a>
+          </a-list-item-meta>
+          <div slot="actions">
+            <a @click="handleSelect(searchResult.id)">Select</a>
+          </div>
+          <div class="list-content">
+            <div class="list-content-item">
+              <span>Teacher</span>
+              <p>{{searchResult.teacher}}</p>
             </div>
-            <div>
-              <span>个人介绍：</span>
-              <span>{{ searchResult.intro }}</span>
+            <div class="list-content-item">
+              <span>Time</span>
+              <p>{{searchResult.time}}</p>
+            </div>
+            <div class="list-content-item">
+              <span>Capacity</span>
+              <p>{{searchResult.capacity}}</p>
+            </div>
+            <div class="list-content-item">
+              <span>Available</span>
+              <p>{{searchResult.available}}</p>
             </div>
           </div>
-        </a-card>
-      </a-list-item>
-    </a-list>
+        </a-list-item>
+      </a-list>
     <div class="list-pagination">
         <a-pagination v-model="currentPage" @change="handlePageChange" :total="this.pagination.total" :pageSize="this.pagination.per_page"/>
     </div>
@@ -37,22 +38,51 @@
 </template>
 
 <script>
-import ACard from 'ant-design-vue/es/card/Card'
-import AList from 'ant-design-vue/es/list'
+import ARow from 'ant-design-vue/es/grid/Row'
+import ACol from 'ant-design-vue/es/grid/Col'
+import HeadInfo from '../../components/tool/HeadInfo'
+import AButton from 'ant-design-vue/es/button/button'
+import AList from 'ant-design-vue/es/list/index'
 import AListItem from 'ant-design-vue/es/list/Item'
-import ACardMeta from 'ant-design-vue/es/card/Meta'
 import AAvatar from 'ant-design-vue/es/avatar/Avatar'
-import ATooltip from 'ant-design-vue/es/tooltip/Tooltip'
-import AIcon from 'ant-design-vue/es/icon/icon'
+import AProgress from 'ant-design-vue/es/progress'
 import ADropdown from 'ant-design-vue/es/dropdown'
 import AMenu from 'ant-design-vue/es/menu/index'
+import AIcon from 'ant-design-vue/es/icon/icon'
+import AButtonGroup from 'ant-design-vue/es/button/button-group'
+import AInput from 'ant-design-vue/es/input/Input'
+import AInputSearch from 'ant-design-vue/es/input/Search'
+import ARadioGroup from 'ant-design-vue/es/radio/Group'
+import ARadio from 'ant-design-vue/es/radio'
 import APagination from 'ant-design-vue/es/pagination'
 
+const AListItemMeta = AListItem.Meta
 const AMenuItem = AMenu.Item
+const ARadioButton = ARadio.Button
 
 export default {
   name: 'SearchList',
-  components: {AMenuItem, AMenu, ADropdown, AIcon, ATooltip, AAvatar, ACardMeta, AListItem, AList, ACard, APagination},
+  components: {
+    ARadioButton,
+    ARadio,
+    ARadioGroup,
+    AInputSearch,
+    AInput,
+    AButtonGroup,
+    AIcon,
+    AMenuItem,
+    AMenu,
+    ADropdown,
+    AProgress,
+    AAvatar,
+    AListItemMeta,
+    AListItem,
+    AList,
+    AButton,
+    HeadInfo,
+    ACol,
+    ARow,
+    APagination},
   created() {
     this.doSearch(1)
   },
@@ -80,7 +110,7 @@ export default {
       var formData = new FormData();
       formData.append("keyword", this.keyword);
       this.$axios
-      .post("/api/users/faculty/search?page=" + page, formData)
+      .post("/api/courses/search?page=" + page, formData)
       .then(resp => {
         console.log("resp " + JSON.stringify(resp));
         if (resp.status == 200) {
@@ -95,6 +125,26 @@ export default {
       .catch(err => {
         console.log("Error: " + JSON.stringify(err));
       });
+    },
+    handleSelect(id) {
+      var t = this
+      var formData = new FormData();
+      formData.append("course_id", id);
+      this.$axios
+          .post("/api/selections/", formData)
+          .then(resp => {
+            let res = resp.data;
+            if (resp.status == 201) {
+              t.$message.success("Selected Successfully");
+            } else {
+              t.$message.error("Selection Failed");
+              console.log("Error: " + JSON.stringify(res));
+            }
+          })
+          .catch(err => {
+            t.$message.error(err.response.data.message);
+            console.log("Error: " + JSON.stringify(err));
+          });
     },
     redirectProfile (id) {
       this.$router.push('/user/' + id)
@@ -119,60 +169,21 @@ export default {
 }
 </script>
 
-<style>
-.card-name {
-  position: relative;
-  cursor: pointer;
-}
-.card-name > .ant-card-meta-detail {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  margin-left: 56px;
-}
-.card-name > .ant-card-meta-detail > .ant-card-meta-title {
-  line-height: 18px;
-  margin-bottom: 2px;
-}
-.card-name > .ant-card-meta-detail > .ant-card-meta-description {
-  font-size: 10px;
-}
-</style>
-
 
 <style lang="less" scoped>
-  .clearfix() {
-    zoom: 1;
-    &:before,
-    &:after {
-      content: ' ';
-      display: table;
+.list-content-item{
+    color: rgba(0,0,0,.45);
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 14px;
+    margin-left: 40px;
+    span{
+      line-height: 20px;
     }
-    &:after {
-      clear: both;
-      visibility: hidden;
-      font-size: 0;
-      height: 0;
-    }
-  }
-  .content {
-    font-size: 13px;
-    margin-top: 20px;
-    div {
-      position: relative;
-      margin-bottom: 5px;
-      span:first-child {
-        color: rgba(0, 0, 0, 0.85);
-        float: left;
-      }
-      span:last-child {
-        color: rgba(0, 0, 0, 0.65);
-      }
-    }
-    div:last-child {
-      span:last-child {
-        margin-bottom: 0;
-      }
+    p{
+      margin-top: 4px;
+      margin-bottom: 0;
+      line-height: 22px;
     }
   }
   .list-pagination {

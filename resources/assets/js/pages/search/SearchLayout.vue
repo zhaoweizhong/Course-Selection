@@ -3,18 +3,24 @@
     <page-view></page-view>
     <div class="search-head">
       <div class="search-input">
-        <a-input-search style="width: 522px" placeholder="输入教师姓名、院系、研究方向、工号搜索..." size="large" enterButton="搜索" @search="onSearch"/>
+        <a-input-search style="width: 522px" placeholder="Search Courses..." size="large" enterButton="Search" @search="onSearch"/>
       </div>
     </div>
     <div class="search-content">
-      <a-spin tip="正在加载..." :spinning="loading">
+      <a-card
+      style="margin-top: 24px"
+      :bordered="false"
+    >
+      <a-spin tip="Loading..." :spinning="loading">
         <search-list :fatherKeyword="fatherKeyword" @loading="doLoading"></search-list>
       </a-spin>
+      </a-card>
     </div>
   </div>
 </template>
 
 <script>
+import ACard from 'ant-design-vue/es/card/Card'
 import AInput from 'ant-design-vue/es/input/Input'
 import AInputGroup from 'ant-design-vue/es/input/Group'
 import AButton from 'ant-design-vue/es/button/button'
@@ -28,7 +34,7 @@ const ATabPane = ATabs.TabPane
 
 export default {
   name: 'SearchLayout',
-  components: {PageView, ATabPane, ATabs, AInputSearch, AButton, AInputGroup, AInput, SearchList, ASpin},
+  components: {ACard, PageView, ATabPane, ATabs, AInputSearch, AButton, AInputGroup, AInput, SearchList, ASpin},
   data() {
     return {
       loading: false,

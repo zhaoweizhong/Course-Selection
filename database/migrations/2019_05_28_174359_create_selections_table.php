@@ -14,7 +14,9 @@ class CreateSelectionsTable extends Migration
     public function up()
     {
         Schema::create('selections', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id')->unique();
+            $table->integer('student_id')->index();
+            $table->integer('course_id')->index();
             $table->timestamps();
         });
     }

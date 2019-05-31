@@ -61,11 +61,4 @@ class UserController extends Controller
         $users = User::search($keyword)->paginate(5);
         return $this->response->paginator($users, new UserTransformer());
     }
-
-    public function searchFaculty(Request $request)
-    {
-        $keyword = $request->keyword;
-        $users = User::search($keyword)->where('type', '1')->paginate(12);
-        return $this->response->paginator($users, new UserTransformer());
-    }
 }

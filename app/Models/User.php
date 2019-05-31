@@ -13,6 +13,7 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
     use Searchable;
+    use HasRoles;
 
     protected $table = 'users';
 
@@ -36,24 +37,14 @@ class User extends Authenticatable implements JWTSubject
 
     // Rest omitted for brevity
 
-    public function messages_to_me()
+    public function selections() // For Students
     {
-        return $this->hasMany('App\Models\Message', 'receiver_id', 'sid');
+        return $this->hasMany('App\Models\Selection', 'student_id', 'id');
     }
 
-    public function messages_to_other()
+    public function courses() // For Teachers
     {
-        return $this->hasMany('App\Models\Message', 'sender_id', 'sid');
-    }
-
-    public function appointments()
-    {
-        if ($this->type == 'student') {
-            return $this->hasMany('App\Models\Appointment', 'student_id', 'sid');
-        } else if ($this->type == 'faculty') {
-            return $this->hasMany('App\Models\Appointment', 'faculty_id', 'sid');
-        }
-        return null;
+        return $this->hasMany('App\Models\Course', 'creator_id', 'id');
     }
 
     public function getJWTIdentifier()

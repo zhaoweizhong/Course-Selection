@@ -16,7 +16,7 @@ class UserRequest extends FormRequest
         switch($this->method()) {
             case 'POST':
                 return [
-                    'sid'      => 'required|numeric|regex:/^[0-9]{8}$/|unique:users',
+                    'sid'      => 'required|numeric|digits:8|unique:users',
                     'password' => 'required|string|min:6',
                     'name'     => 'required|string|max:255',
                     'email'    => 'required|email',
@@ -26,7 +26,7 @@ class UserRequest extends FormRequest
             case 'PATCH':
                 $userId = \Auth::guard('api')->id();
                 return [
-                    'password'   => 'required|string|min:6',
+                    'password'   => 'string|min:6',
                     'name'       => 'string|max:255',
                     'email'      => 'email',
                     'mobile'     => 'numeric|digits:11',

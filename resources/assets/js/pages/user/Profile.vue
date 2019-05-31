@@ -1,5 +1,5 @@
 <template>
-<page-layout title="个人中心">
+<page-layout title="Profile">
 	<a-card :bordered="false">
 		<div class="info">
 			<div class="avatar" id="avatar">
@@ -11,7 +11,7 @@
 						<div class="mask-inner"></div>
 						<div class="mask-content">
 							<svg class="Zi Zi--Camera UserAvatarEditor-cameraIcon" fill="currentColor" viewBox="0 0 24 24" width="36" height="36"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" fill-rule="evenodd"></path></svg>
-							<div class="mask-text">修改我的头像</div>
+							<div class="mask-text">Change Avatar</div>
 						</div>
 					</div>
 				</label>
@@ -22,60 +22,23 @@
 			<div class="info-content">
 				<div class="name">
 					<span>{{ currUser.name }}</span>
-					<a-tag color="#87d068" v-if="currUser.type=='student'"><a-icon type="user" /> 学生</a-tag>
-					<a-tag color="#2db7f5" v-else><a-icon type="user" /> 教师</a-tag>
+					<a-tag color="#87d068" v-if="currUser.type=='0'"><a-icon type="user" /> Student</a-tag>
+					<a-tag color="#2db7f5" v-else><a-icon type="user" /> Teacher</a-tag>
 				</div>
 				<div class="detail">
-					<div v-if="currUser.type=='student'">
-						<div>
-							<a-icon type="mail" />
-							<span>{{ currUser.email }}</span>
-						</div>
-						<div>
-							<a-icon type="book" />
-							<span>{{ currUser.department}}</span><span class="divider"></span><span>{{ currUser.major }}</span>
-						</div>
-					</div>
-					<div v-else>
-						<div>
-							<a-icon type="mail" />
-							<span>{{ currUser.email }}</span>
-						</div>
-						<div>
-							<a-icon type="book" />
-							<span>{{ currUser.department}}</span>
-						</div>
-					</div>
+					<a-icon type="mail" />
+					<span>{{ currUser.email }}</span>
 				</div>
-			</div>
-			<div class="edit">
-				<router-link to="/settings">
-					<a-button type="dashed" icon="edit" size="default">编辑个人资料</a-button>
-				</router-link>
 			</div>
 		</div>
 
 		<a-divider style="margin-bottom: 32px" />
-		<detail-list title="个人资料">
-			<div v-if="currUser.type=='student'">
-				<detail-list-item term="学号">{{ currUser.sid }}</detail-list-item>
-				<detail-list-item term="邮箱">{{ currUser.email }}</detail-list-item>
-				<detail-list-item term="院系">{{ currUser.department }}</detail-list-item>
-				<detail-list-item term="专业">{{ currUser.major }}</detail-list-item>
-				<detail-list-item term="GPA">{{ currUser.gpa }}</detail-list-item>
-				<detail-list-item term="兴趣方向">{{ currUser.interested_fields }}</detail-list-item>
-			</div>
-			<div v-else>
-				<detail-list-item term="工号">{{ currUser.sid }}</detail-list-item>
-				<detail-list-item term="邮箱">{{ currUser.email }}</detail-list-item>
-				<detail-list-item term="院系">{{ currUser.department }}</detail-list-item>
-				<detail-list-item term="办公室">{{ currUser.office }}</detail-list-item>
-				<detail-list-item term="研究方向">{{ currUser.fields }}</detail-list-item>
+		<detail-list title="Profile">
+			<div>
+				<detail-list-item term="SID">{{ currUser.sid }}</detail-list-item>
+				<detail-list-item term="Email">{{ currUser.email }}</detail-list-item>
 			</div>
 		</detail-list>
-		<a-divider style="margin-bottom: 32px" />
-		<div class="intro-title">个人介绍</div>
-		<div class="intro-content">{{ currUser.intro }}</div>
 	</a-card>
 </page-layout>
 </template>

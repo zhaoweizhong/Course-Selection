@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('name');
             $table->string('email');
-            $table->integer('mobile')->nullable();
+            $table->bigInteger('mobile')->nullable();
             $table->string('avatar_url')->nullable();
             $table->integer('type'); // 0: student | 1: teacher
             $table->boolean('is_admin')->default(0);

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Dingo\Api\Http\FormRequest;
 
-class MessageRequest extends FormRequest
+class SelectionRequest extends FormRequest
 {
     public function authorize()
     {
@@ -14,8 +14,7 @@ class MessageRequest extends FormRequest
     public function rules()
     {
         return [
-            'receiver_id'=>'required|numeric',
-            'content'=>'required|string|max:1024',
+            'course_id'        => 'required|numeric',
         ];
     }
-}    
+}

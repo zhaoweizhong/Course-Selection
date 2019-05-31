@@ -4,10 +4,10 @@ export default {
     isMobile: false,
     theme: 'dark',
     layout: 'side',
-    systemName: '教师查询预约系统',
-    copyright: '2018 Some rights reserved.\n This software is licensed under the MIT License.',
+    systemName: 'Course Selection System',
+    copyright: '2019 Some rights reserved.\n This software is licensed under the MIT License.',
     footerLinks: [
-      {link: 'https://github.com/zhaoweizhong/Faculty-Reservation', icon: 'github'}
+      {link: 'https://github.com/zhaoweizhong/Course-Selection', icon: 'github'}
     ]
   },
   mutations: {

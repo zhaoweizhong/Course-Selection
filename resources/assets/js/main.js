@@ -23,21 +23,25 @@ axios.interceptors.response.use(
 		return response;
 	},
 	function (error) {
+		console.log("error: " + JSON.stringify(error.response))
 		const originalRequest = error.config;
-		if (error.response.status === 401 && !originalRequest._retry) {
+		if (error.response.status === 401 && (error.response.data.message.indexOf('expired')!=-1 || error.response.data.message.indexOf('segments')!=-1) && !originalRequest._retry) {
 			originalRequest._retry = true;
-			axios.defaults.headers.common["Authorization"] =
-				"Bearer " + getCookie("token");
-			return axios.put("/api/authorizations/current").then(res => {
-				store.commit("account/refreshToken", res.data.access_token);
+			axios.defaults.headers.common["Authorization"] = "Bearer " + getCookie("token");
+			return axios.put(Vue.prototype.API_DOMAIN + "/api/auth/current").then(res => {
+				store.commit('account/refreshToken', res.data.access_token);
 				originalRequest.headers.Authorization =
 					"Bearer " + res.data.access_token;
 				return axios(originalRequest);
 			});
 		}
-		if (error.response.status === 500 && error.response.data.message.indexOf('blacklist')) {
-			store.commit("account/logout")
-			router.push('/login')
+		if ((error.response.status === 500 || error.response.status === 401) && error.response.data.message.indexOf('blacklist')!=-1) {
+			store.commit('account/logout')
+			Message({
+				showClose: true,
+				message: '登录失效，请重新登录',
+				type: 'error'
+			});
 			return Promise.reject(error);
 		}
 		return Promise.reject(error);

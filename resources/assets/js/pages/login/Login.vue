@@ -9,39 +9,26 @@
         <div class="login">
             <a-form @submit="onSubmit" :autoFormCreate="(form) => this.form = form">
                 <a-tabs size="large" :tabBarStyle="{textAlign: 'center'}" style="padding: 0 2px;">
-                    <a-tab-pane tab="学生登录" key="1">
+                    <a-tab-pane tab="Login" key="1">
                         <a-alert type="error" :closable="true" v-show="error" :message="error" showIcon style="margin-bottom: 24px;" />
-                        <a-form-item fieldDecoratorId="sid" :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入学号', whitespace: true}]}">
-                            <a-input size="large" placeholder="请输入学号">
+                        <a-form-item fieldDecoratorId="sid" :fieldDecoratorOptions="{rules: [{ required: true, message: 'Please enter your SID.', whitespace: true}]}">
+                            <a-input size="large" placeholder="SID">
                                 <a-icon slot="prefix" type="user" />
                             </a-input>
                         </a-form-item>
-                        <a-form-item fieldDecoratorId="password" :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入密码', whitespace: true}]}">
-                            <a-input size="large" placeholder="请输入密码" type="password">
-                                <a-icon slot="prefix" type="lock" />
-                            </a-input>
-                        </a-form-item>
-                    </a-tab-pane>
-                    <a-tab-pane tab="教师登录" key="2">
-                        <a-alert type="error" :closable="true" v-show="error" :message="error" showIcon style="margin-bottom: 24px;" />
-                        <a-form-item fieldDecoratorId="sid" :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入 SID', whitespace: true}]}">
-                            <a-input size="large" placeholder="请输入 SID">
-                                <a-icon slot="prefix" type="user" />
-                            </a-input>
-                        </a-form-item>
-                        <a-form-item fieldDecoratorId="password" :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入密码', whitespace: true}]}">
-                            <a-input size="large" placeholder="请输入密码" type="password">
+                        <a-form-item fieldDecoratorId="password" :fieldDecoratorOptions="{rules: [{ required: true, message: 'Please enter your password.', whitespace: true}]}">
+                            <a-input size="large" placeholder="Password" type="password">
                                 <a-icon slot="prefix" type="lock" />
                             </a-input>
                         </a-form-item>
                     </a-tab-pane>
                 </a-tabs>
                 <div>
-                    <a-checkbox :defaultChecked="true">自动登录</a-checkbox>
-                    <a style="float: right">忘记密码</a>
+                    <a-checkbox :defaultChecked="true">Remeber Me</a-checkbox>
+                    <a style="float: right">Lost Password</a>
                 </div>
                 <a-form-item>
-                    <a-button :loading="logging" style="width: 100%;margin-top: 24px" size="large" htmlType="submit" type="primary">登录</a-button>
+                    <a-button :loading="logging" style="width: 100%;margin-top: 24px" size="large" htmlType="submit" type="primary">Login</a-button>
                 </a-form-item>
             </a-form>
         </div>
@@ -108,7 +95,7 @@ export default {
             this.form.validateFields((err, values) => {
                 if (!err) {
                     this.logging = true
-                    this.$axios.post('/api/authorizations', {
+                    this.$axios.post('/api/auth', {
                         sid: this.form.getFieldValue('sid'),
                         password: this.form.getFieldValue('password')
                     }).then((res) => {
@@ -122,7 +109,7 @@ export default {
                             this.$router.push('/')
                             var time = new Date()
                             var hour = time.getHours()
-                            this.$message.success(hour < 9 ? '早上好' : (hour <= 11 ? '上午好' : (hour <= 13 ? '中午好' : (hour <= 20 ? '下午好' : '晚上好'))) + '，欢迎回来', 1)
+                            this.$message.success(hour < 9 ? 'Good Morning' : (hour <= 11 ? 'Good Morning' : (hour <= 13 ? 'Good Afternoon' : (hour <= 20 ? 'Good Afternoon' : 'Good Evening'))) + ', Welcome Back!', 1)
                         }
                     }).catch((error) => {
                         this.logging = false

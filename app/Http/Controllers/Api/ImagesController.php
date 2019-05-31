@@ -10,6 +10,8 @@ class ImagesController extends Controller {
             $path = 'uploads';
             $cdn = 'https://f.zzwcdn.com/';
             $url = $cdn . Storage::putFile($path, $request->image);
+            $user = \Auth::guard('api')->user();
+            $user->update(['avatar_url' => $url]);
             return response()->json([
                     'url'         => $url,
                     'status_code' => 201

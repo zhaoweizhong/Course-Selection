@@ -6,13 +6,10 @@ import MenuView from "../layouts/MenuView";
 import Login from "../pages/login/Login";
 
 import Profile from "../pages/user/Profile";
-import Settings from "../pages/user/Settings";
-import UserProfile from "../pages/user/UserProfile";
 
 import Search from "../pages/search/Search"
-import AppointmentList from "../pages/appointment/AppointmentList"
+import SelectedList from "../pages/selection/SelectedList"
 import AppointmentDetail from "../pages/appointment/AppointmentDetail"
-import Calendar from "../pages/appointment/Calendar"
 import CreateAppointment from "../pages/appointment/CreateAppointment"
 import SendMessage from "../pages/message/SendMessage"
 import Inbox from "../pages/message/Inbox"
@@ -41,12 +38,14 @@ import { getCookie } from "tiny-cookie";
 
 Vue.use(Router);
 
+console.log(JSON.stringify(store.state.account.user))
+
 var router = new Router({
     mode: "history",
     routes: [
         {
             path: "/login",
-            name: "登录页",
+            name: "Login",
             meta: {
                 requiresNoAuth: true
             },
@@ -55,23 +54,23 @@ var router = new Router({
         },
         {
             path: "/",
-            name: "首页",
+            name: "Home",
             component: MenuView,
             icon: "none",
             invisible: true,
             children: [
                 {
                     path: "/",
-                    name: "搜索",
+                    name: "Search",
                     meta: {
                         requiresAuth: true
                     },
-                    component: Search,
+                    component: SearchLayout,
                     icon: "dashboard"
                 },
                 {
                     path: "/search/:keyword",
-                    name: "搜索结果",
+                    name: "Search Result",
                     meta: {
                         requiresAuth: true
                     },
@@ -80,18 +79,8 @@ var router = new Router({
                     icon: "dashboard"
                 },
                 {
-                    path: "/user/:id",
-                    name: "用户详情",
-                    meta: {
-                        requiresAuth: true
-                    },
-                    component: UserProfile,
-                    invisible: true,
-                    icon: "none"
-                },
-                {
                     path: "/profile",
-                    name: "个人中心",
+                    name: "Profile",
                     meta: {
                         requiresAuth: true
                     },
@@ -100,98 +89,13 @@ var router = new Router({
                     icon: "none"
                 },
                 {
-                    path: "/settings",
-                    name: "个人设置",
+                    path: "/courses",
+                    name: "Course List",
+                    component: SelectedList,
+                    icon: "profile",
                     meta: {
                         requiresAuth: true
                     },
-                    component: Settings,
-                    invisible: true,
-                    icon: "none"
-                },
-                {
-                    path: "/appointment/:id",
-                    name: "预约详情",
-                    component: AppointmentDetail,
-                    invisible: true,
-                },
-                {
-                    path: "/appointments",
-                    name: "预约",
-                    component: PageView,
-                    icon: "schedule",
-                    children: [
-                        {
-                            path: "/appointments/list",
-                            name: "我的预约",
-                            component: AppointmentList,
-                            icon: "profile"
-                        },
-                        {
-                            path: "/appointments/calendar",
-                            name: "预约日历",
-                            component: Calendar,
-                            icon: "calendar",
-                            invisible: true,
-                        },
-                        {
-                            path: "/appointments/new/:sid",
-                            name: "新建预约",
-                            component: CreateAppointment,
-                            invisible: true,
-                        },
-                        {
-                            path: "/appointments/:id/success",
-                            name: "提交成功",
-                            invisible: true,
-                            component: SuccessResult
-                        },
-                        {
-                            path: "/result/error",
-                            name: "失败",
-                            invisible: true,
-                            component: ErrorResult
-                        }
-                    ]
-                },
-                {
-                    path: "/message",
-                    name: "消息",
-                    component: PageView,
-                    icon: "message",
-                    children: [
-                        {
-                            path: "/messages/inbox",
-                            name: "收件箱",
-                            component: Inbox,
-                            icon: "inbox"
-                        },
-                        {
-                            path: "/messages/sent",
-                            name: "发件箱",
-                            component: SentBox,
-                            icon: "mail",
-                            invisible: true,
-                        },
-                        {
-                            path: "/messages/new",
-                            name: "发送消息",
-                            component: SendMessage,
-                            icon: "form"
-                        },
-                        {
-                            path: "/messages/new/:sid",
-                            name: "发送消息",
-                            component: SendMessage,
-                            invisible: true
-                        },
-                        {
-                            path: "/message/:id",
-                            name: "消息详情",
-                            component: MessageDetail,
-                            invisible: true
-                        }
-                    ]
                 },
                 {
                     path: "/form",

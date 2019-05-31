@@ -7,16 +7,11 @@
     <a-menu style="width: 150px" slot="overlay">
       <a-menu-item @click="profile">
         <a-icon type="user" />
-        <span>个人中心</span>
+        <span>Profile</span>
       </a-menu-item>
-      <a-menu-item @click="settings">
-        <a-icon type="setting" />
-        <span>个人设置</span>
-      </a-menu-item>
-      <a-menu-divider />
       <a-menu-item @click="logout">
         <a-icon type="poweroff" />
-        <span>退出登录</span>
+        <span>Log Out</span>
       </a-menu-item>
     </a-menu>
   </a-dropdown>
@@ -44,7 +39,7 @@ export default {
           this.$store.commit('account/logout')
           this.$axios.defaults.headers.common['Authorization'] = ''
           this.$router.push('/login')
-          this.$message.success('您已成功退出')
+          this.$message.success('Logged out successfully')
       },
       profile() {
           this.$router.push('/profile')
